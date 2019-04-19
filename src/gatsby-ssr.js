@@ -58,12 +58,12 @@ export const onPreRenderHTML = (
         />
       </noscript>,
       <style amp-custom="" dangerouslySetInnerHTML={{ __html: styles }} />,
-      ...components.map((x, i) => (
+      ...components.map((component, i) => (
         <script
           key={`custom-element-${i}`}
           async
-          custom-element={x}
-          src={`https://cdn.ampproject.org/v0/${x}-0.1.js`}
+          custom-element={component.name}
+          src={`https://cdn.ampproject.org/v0/${component.name}-${component.version}.js`}
         />
       )),
       analytics !== undefined ? (
