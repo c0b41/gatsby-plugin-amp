@@ -111,6 +111,7 @@ export const onPreRenderHTML = (
       ...headComponents
     ]);
   }
+
 };
 
 export const onRenderBody = (
@@ -179,7 +180,7 @@ export const onRenderBody = (
 
 export const replaceRenderer = (
   { bodyComponent, replaceBodyHTMLString, setHeadComponents, pathname },
-  { pathIdentifier = "/amp/" }
+  { pathIdentifier = "/amp/", stories = false }
 ) => {
   const defaults = {
     image: {
@@ -190,6 +191,7 @@ export const replaceRenderer = (
   };
   const headComponents = [];
   const isAmp = pathname && pathname.indexOf(pathIdentifier) > -1;
+  
   if (isAmp) {
     const bodyHTML = renderToString(bodyComponent);
     const dom = new JSDOM(bodyHTML);
@@ -218,16 +220,26 @@ export const replaceRenderer = (
       image.parentNode.replaceChild(ampImage, image);
     });
     setHeadComponents(
-      Array.from(new Set(headComponents)).map((x, i) => (
+      Array.from(new Set(headComponents)).map((component, i) => (
         <Fragment key={`head-components-${i}`}>
           <script
             async
-            custom-element={x}
-            src={`https://cdn.ampproject.org/v0/${x}-0.1.js`}
+            custom-element={component.name}
+            src={`https://cdn.ampproject.org/v0/${component.version}-${component.version}.js`}
           />
         </Fragment>
       ))
-    );
+    )
+
+    if(stories && document.getElementsByTagName("amp-story")){
+      if (document.querySelector('div')){
+        document
+          .querySelector('div')
+          .replaceWith(document.getElementsByTagName('amp-story')[0])
+        
+      }
+    }
+
     replaceBodyHTMLString(document.documentElement.outerHTML);
   }
 };
