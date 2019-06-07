@@ -217,6 +217,10 @@ export const replaceRenderer = (
       });
       image.parentNode.replaceChild(ampImage, image);
     });
+
+    const scripts = [].slice.call(document.querySelectorAll('body > script'))
+    scripts.forEach((script) => script.remove())
+    
     setHeadComponents(
       Array.from(new Set(headComponents)).map((x, i) => (
         <Fragment key={`head-components-${i}`}>

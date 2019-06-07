@@ -1,6 +1,6 @@
 {
   "name": "@c0b41/gatsby-plugin-amp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A gatsby plugin for scaffolding AMP pages",
   "main": "index.js",
   "scripts": {
